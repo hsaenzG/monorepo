@@ -1,24 +1,28 @@
-name: CI
+name: Develop CI - On Push to origin/main
+
 on:
   push:
     branches:
       - 'main'
 
 jobs:
-  main:
+  setup:
+    name: 'Testing Application and Creating build artifact'
     runs-on: ubuntu-latest
+    timeout-minutes: 20
+    outputs:
+      affected_apps: ${{ step.get-affected-apps.outputs.affected_apps }}
+
     steps:
       - uses: actions/checkout@v2
         with:
           fetch-depth: 0
-      - uses: nrwl/nx-set-shas@v3
-      - run: npm ci
 
-      - run: npx nx workspace-lint
-      - run: npx nx format:check
-      - run: npx nx affected --target=lint --parallel=3
-      - run: npx nx affected --target=test --parallel=3 --ci --code-coverage
-      - run: npx nx affected --target=build --parallel=3
+      - uses: actions/setup-node@v2beta
+        with:
+          node-version: '12'
+          check-latest: true 
+     
 
   - name: Getting yarn cache directory path
     id: yarn-cache-dir-path
@@ -37,6 +41,15 @@ jobs:
 
   - name: Derive appropiate SHAs for base and head for `nx affected`commands
     uses: nrwl/nx-set-shas@v3
+  
+  - name: Running lint
+    run: npx nx affected --target=lint --parallel=3
+
+  - name: Running tests
+    run: npx nx affected --target=test --parallel=3 --ci --code-coverage
+    
+  - name: Building app
+    run: npx nx affected --target=build --parallel=3 
 
   - name: Get affected apps
     id: get-affected-apps
