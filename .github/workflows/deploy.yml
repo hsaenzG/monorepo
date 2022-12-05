@@ -69,7 +69,8 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 20
 
-    steps: actions/checkout@v2
+    steps: 
+      uses: actions/checkout@v2
 
       - name: Download app1 Artifacts
         uses: actions/download-artifact@v2
