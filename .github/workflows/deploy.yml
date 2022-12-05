@@ -3,11 +3,12 @@ name: Develop CI - On Push to origin/main
 on:
   push:
     branches:
-      - 'main'
+      - main
 
 jobs:
   ci:
-    name: 'Testing Application and Creating build artifact'
+    name: Testing Application and Creating build artifact
+    
     runs-on: ubuntu-latest
     timeout-minutes: 20
     outputs:
@@ -24,69 +25,69 @@ jobs:
           check-latest: true 
      
 
-  - name: Getting yarn cache directory path
-    id: yarn-cache-dir-path
-    run: echo "::set-output name=dir::$(yarn cahce dir)"
+    - name: Getting yarn cache directory path
+      id: yarn-cache-dir-path
+      run: echo "::set-output name=dir::$(yarn cahce dir)"
 
-  - uses: actions/cache@v2
-    id: yarn-cache
-    with:
-      path: ${{ steps.yarn-cache-dir-path.outputs.dir }}
-      key: ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
-      restore-keys: |
-        ${{ runner.os }} -yarn-
+    - uses: actions/cache@v2
+      id: yarn-cache
+      with:
+        path: ${{ steps.yarn-cache-dir-path.outputs.dir }}
+        key: ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
+        restore-keys: |
+          ${{ runner.os }} -yarn-
 
-  - name: Installing Dependencies
-    run: yarn Install --prefer-offline
+    - name: Installing Dependencies
+      run: yarn Install --prefer-offline
 
-  - name: Derive appropiate SHAs for base and head for `nx affected`commands
-    uses: nrwl/nx-set-shas@v3
-  
-  - name: Running lint
-    run: npx nx affected --target=lint --parallel=3
-
-  - name: Running tests
-    run: npx nx affected --target=test --parallel=3 --ci --code-coverage
+    - name: Derive appropiate SHAs for base and head for `nx affected`commands
+      uses: nrwl/nx-set-shas@v3
     
-  - name: Building app
-    run: npx nx affected --target=build --parallel=3 
+    - name: Running lint
+      run: npx nx affected --target=lint --parallel=3
 
-  - name: Get affected apps
-    id: get-affected-apps
-    run: |
-      echo "::set-output name=affected_apps::$(./node_modules/.bin/nxaffected:apps --plain)"
+    - name: Running tests
+      run: npx nx affected --target=test --parallel=3 --ci --code-coverage
+      
+    - name: Building app
+      run: npx nx affected --target=build --parallel=3 
 
-  - name: Saving app1 build as artifact
-    if: ${{ contains( step.get-affected-apps.outputs.affected_apps,'app1') }}
-    uses: actions/upload-artifact@v2
-    with:
-      name: app1-artifact
-      path: dist/apps/app1
+    - name: Get affected apps
+      id: get-affected-apps
+      run: |
+        echo "::set-output name=affected_apps::$(./node_modules/.bin/nxaffected:apps --plain)"
 
-deploy-app1:
-  name: ${{ contains(needs.setup.outputs.affected_apps, 'app1' }}
-  needs: setup
-  runs-on: ubuntu-latest
-  timeout-minutes: 20
+    - name: Saving app1 build as artifact
+      if: ${{ contains( step.get-affected-apps.outputs.affected_apps,'app1') }}
+      uses: actions/upload-artifact@v2
+      with:
+        name: app1-artifact
+        path: dist/apps/app1
 
-  steps: actions/checkout@v2
+  deploy-app1:
+    name: ${{ contains(needs.setup.outputs.affected_apps, 'app1' }}
+    needs: setup
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
 
-  - name: Download app1 Artifacts
-    uses: actions/download-artifact@v2
-    with:
-      name: app1-artifact
-      path: dist/apps/app1
+    steps: actions/checkout@v2
 
-  - name: Deploy S3
-    uses: jakejarvis/s3-sync-action@master
-    with:
-      args: --acl public-read --follow-symlinks --delete
-    env:
-      AWS_S3_BUCKET: ${{ secrets.S3_BUCKET_APP1 }}
-      AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
-      AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-      AWS_REGION: ${{ secrets.S3_BUCKET_REGION }}
-      SOURCE_DIR: 'dist/apps/app1'
+    - name: Download app1 Artifacts
+      uses: actions/download-artifact@v2
+      with:
+        name: app1-artifact
+        path: dist/apps/app1
+
+    - name: Deploy S3
+      uses: jakejarvis/s3-sync-action@master
+      with:
+        args: --acl public-read --follow-symlinks --delete
+      env:
+        AWS_S3_BUCKET: ${{ secrets.S3_BUCKET_APP1 }}
+        AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+        AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+        AWS_REGION: ${{ secrets.S3_BUCKET_REGION }}
+        SOURCE_DIR: 'dist/apps/app1'
 
 
 
