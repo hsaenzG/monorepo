@@ -36,9 +36,6 @@ jobs:
           restore-keys: |
             ${{ runner.os }} -yarn-
 
-      - name: Installing Dependencies
-        run: yarn Install --prefer-offline
-
       - name: Derive appropiate SHAs for base and head for `nx affected`commands
         uses: nrwl/nx-set-shas@v3
       
