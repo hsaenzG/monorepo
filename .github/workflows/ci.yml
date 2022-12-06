@@ -63,6 +63,20 @@ jobs:
         with:
           name: app1-artifact
           path: dist/apps/app1
+        
+      - name: Saving app2 build as artifact
+ #       if: ${{ contains( steps.get-affected-apps.outputs.affected_apps,'app2') }}
+        uses: actions/upload-artifact@v2
+        with:
+          name: app2-artifact
+          path: dist/apps/app2
+
+      - name: Saving app3 build as artifact
+ #       if: ${{ contains( steps.get-affected-apps.outputs.affected_apps,'app3') }}
+        uses: actions/upload-artifact@v2
+        with:
+          name: app3-artifact
+          path: dist/apps/app3
 
   deploy-app1:
     name: deploy app1 # ${{ contains(needs.setup.outputs.affected_apps, 'app1') }}
@@ -102,7 +116,7 @@ jobs:
       - name: Download app1 Artifacts
         uses: actions/download-artifact@v2
         with:
-          name: app1-artifact
+          name: app2-artifact
           path: dist/apps/app2
 
       - name: Deploy S3
@@ -128,7 +142,7 @@ jobs:
       - name: Download app3 Artifacts
         uses: actions/download-artifact@v2
         with:
-          name: app1-artifact
+          name: app3-artifact
           path: dist/apps/app3
 
       - name: Deploy S3
