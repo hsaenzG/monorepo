@@ -7,7 +7,7 @@ import { Component, ViewEncapsulation } from '@angular/core';
   template: `
     <!--
      * * * * * * * * * * * * * * * * * * * * * * * * * * * *
-     This is a starter component and can be deleted.
+     This is a starter component and can be deleted. pruebaff 
      * * * * * * * * * * * * * * * * * * * * * * * * * * * *
      Delete this file and get started with your project!
      * * * * * * * * * * * * * * * * * * * * * * * * * * * *
