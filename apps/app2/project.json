@@ -1,8 +1,8 @@
 {
-  "name": "app1",
+  "name": "app2",
   "$schema": "../../node_modules/nx/schemas/project-schema.json",
   "projectType": "application",
-  "sourceRoot": "apps/app1/src",
+  "sourceRoot": "apps/app2/src",
   "prefix": "fe-workspace",
   "targets": {
     "build": {
@@ -11,20 +11,20 @@
         "{options.outputPath}"
       ],
       "options": {
-        "outputPath": "dist/apps/app1",
-        "index": "apps/app1/src/index.html",
-        "main": "apps/app1/src/main.ts",
+        "outputPath": "dist/apps/app2",
+        "index": "apps/app2/src/index.html",
+        "main": "apps/app2/src/main.ts",
         "polyfills": [
           "zone.js"
         ],
-        "tsConfig": "apps/app1/tsconfig.app.json",
+        "tsConfig": "apps/app2/tsconfig.app.json",
         "inlineStyleLanguage": "scss",
         "assets": [
-          "apps/app1/src/favicon.ico",
-          "apps/app1/src/assets"
+          "apps/app2/src/favicon.ico",
+          "apps/app2/src/assets"
         ],
         "styles": [
-          "apps/app1/src/styles.scss"
+          "apps/app2/src/styles.scss"
         ],
         "scripts": []
       },
@@ -59,10 +59,10 @@
       "executor": "@angular-devkit/build-angular:dev-server",
       "configurations": {
         "production": {
-          "browserTarget": "app1:build:production"
+          "browserTarget": "app2:build:production"
         },
         "development": {
-          "browserTarget": "app1:build:development"
+          "browserTarget": "app2:build:development"
         }
       },
       "defaultConfiguration": "development"
@@ -70,15 +70,15 @@
     "extract-i18n": {
       "executor": "@angular-devkit/build-angular:extract-i18n",
       "options": {
-        "browserTarget": "app1:build"
+        "browserTarget": "app2:build"
       }
     },
     "lint": {
       "executor": "@nrwl/linter:eslint",
       "options": {
         "lintFilePatterns": [
-          "apps/app1/**/*.ts",
-          "apps/app1/**/*.html"
+          "apps/app2/**/*.ts",
+          "apps/app2/**/*.html"
         ]
       }
     },
@@ -88,7 +88,7 @@
         "{workspaceRoot}/coverage/{projectRoot}"
       ],
       "options": {
-        "jestConfig": "apps/app1/jest.config.ts",
+        "jestConfig": "apps/app2/jest.config.ts",
         "passWithNoTests": true
       }
     }

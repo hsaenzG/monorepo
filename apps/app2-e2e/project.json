@@ -1,19 +1,19 @@
 {
-  "name": "app1-e2e",
+  "name": "app2-e2e",
   "$schema": "../../node_modules/nx/schemas/project-schema.json",
-  "sourceRoot": "apps/app1-e2e/src",
+  "sourceRoot": "apps/app2-e2e/src",
   "projectType": "application",
   "targets": {
     "e2e": {
       "executor": "@nrwl/cypress:cypress",
       "options": {
-        "cypressConfig": "apps/app1-e2e/cypress.config.ts",
-        "devServerTarget": "app1:serve:development",
+        "cypressConfig": "apps/app2-e2e/cypress.config.ts",
+        "devServerTarget": "app2:serve:development",
         "testingType": "e2e"
       },
       "configurations": {
         "production": {
-          "devServerTarget": "app1:serve:production"
+          "devServerTarget": "app2:serve:production"
         }
       }
     },
@@ -24,13 +24,13 @@
       ],
       "options": {
         "lintFilePatterns": [
-          "apps/app1-e2e/**/*.{js,ts}"
+          "apps/app2-e2e/**/*.{js,ts}"
         ]
       }
     }
   },
   "tags": [],
   "implicitDependencies": [
-    "app1"
+    "app2"
   ]
 }
