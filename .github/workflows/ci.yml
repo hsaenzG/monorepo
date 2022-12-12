@@ -6,6 +6,16 @@ on:
       - main
   pull_request:
 
+env:
+  S3_BUCKET_APP1: hermes2-fe1bucket107cf414-17h3m3alc5pfw
+  S3_BUCKET_APP2: hermes2-fe2bucketf5241bf2-1sjbz030122d1
+  S3_BUCKET_APP3: hermes2-fe3bucket7e8b6383-1nl6ky7nyf5tw
+  S3_BUCKET_REGION: 'us-east-1'
+  S3_DEST_DIR_APP1: fe1
+  S3_DEST_DIR_APP2: fe2
+  S3_DEST_DIR_APP3: fe3
+
+
 jobs:
   ci:
     name: Testing Application and Creating build artifact
@@ -98,11 +108,11 @@ jobs:
         with:
           args: --acl public-read --follow-symlinks --delete
         env:
-          AWS_S3_BUCKET: ${{ secrets.S3_BUCKET_APP1 }}
+          AWS_S3_BUCKET: $S3_BUCKET_APP1
           AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
           AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          AWS_REGION: ${{ secrets.S3_BUCKET_REGION }}
-          DEST_DIR: 'fe1'
+          AWS_REGION: $S3_BUCKET_REGION
+          DEST_DIR: $S3_DEST_DIR_APP1
           SOURCE_DIR: 'dist/apps/app1'
 
   deploy-app2:
@@ -125,11 +135,11 @@ jobs:
         with:
           args: --acl public-read --follow-symlinks --delete
         env:
-          AWS_S3_BUCKET: ${{ secrets.S3_BUCKET_APP2 }}
+          AWS_S3_BUCKET: $S3_BUCKET_APP2
           AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
           AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          AWS_REGION: ${{ secrets.S3_BUCKET_REGION }}
-          DEST_DIR: 'fe2'
+          AWS_REGION: $S3_BUCKET_REGION
+          DEST_DIR: $S3_DEST_DIR_APP2
           SOURCE_DIR: 'dist/apps/app2'
 
   deploy-app3:
@@ -152,9 +162,9 @@ jobs:
         with:
           args: --acl public-read --follow-symlinks --delete
         env:
-          AWS_S3_BUCKET: ${{ secrets.S3_BUCKET_APP3 }}
+          AWS_S3_BUCKET: $S3_BUCKET_APP3
           AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
           AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           AWS_REGION: ${{ secrets.S3_BUCKET_REGION }}
-          DEST_DIR: 'fe3'
+          DEST_DIR: $S3_DEST_DIR_APP3
           SOURCE_DIR: 'dist/apps/app3'
