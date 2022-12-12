@@ -108,11 +108,11 @@ jobs:
         with:
           args: --acl public-read --follow-symlinks --delete
         env:
-          AWS_S3_BUCKET: $S3_BUCKET_APP1
+          AWS_S3_BUCKET: ${{ env.S3_BUCKET_APP1 }}
           AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
           AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          AWS_REGION: $S3_BUCKET_REGION
-          DEST_DIR: $S3_DEST_DIR_APP1
+          AWS_REGION: ${{ env.S3_BUCKET_REGION }}
+          DEST_DIR: ${{ env.S3_DEST_DIR_APP1 }}
           SOURCE_DIR: 'dist/apps/app1'
 
   deploy-app2:
@@ -135,11 +135,11 @@ jobs:
         with:
           args: --acl public-read --follow-symlinks --delete
         env:
-          AWS_S3_BUCKET: "$S3_BUCKET_APP2"
+          AWS_S3_BUCKET: ${{ env.S3_BUCKET_APP2 }}
           AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
           AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          AWS_REGION: "$S3_BUCKET_REGION"
-          DEST_DIR: "$S3_DEST_DIR_APP2"
+          AWS_REGION: ${{ env.S3_BUCKET_REGION }}
+          DEST_DIR: ${{ env.S3_DEST_DIR_APP2 }}
           SOURCE_DIR: 'dist/apps/app2'
 
   deploy-app3:
